@@ -1,0 +1,9 @@
+version: 1
+customer_orders:
+  url: http://localhost:8090/readings/customer-orders
+completed_orders:
+  url: http://localhost:8090/readings/completed-orders
+events:
+  hostname: acit3855lab6.eastus.cloudapp.azure.com
+  port: 9092
+  topic: events
