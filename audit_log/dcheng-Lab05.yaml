@@ -1,0 +1,141 @@
+openapi: 3.0.0
+info:
+  description: This is a simple API for business service
+  version: "1.0.0"
+  title: Reading API
+  contact:
+    email: dcheng72@my.bcit.ca
+    
+paths:
+  /readings/customer-orders:
+    get:
+      tags:
+        - devices
+      summary: gets new customer order readings
+      operationId: app.get_customer_order_readings
+      description: |
+        Get customer order readings from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Limits the number of orders on a page
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned a list of customer orders events
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CustomerOrdersReading'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+    
+  /readings/completed-orders:
+    get:
+      tags:
+        - devices
+      summary: gets new completed order readings
+      operationId: app.get_completed_order_readings
+      description: |
+        Get completed order readings from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the completed order at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned a list of completed orders events
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/CompletedOrdersReading'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+
+components:
+  schemas:
+    CustomerOrdersReading:
+      required:
+        - order_id
+        - device_id
+        - releaseDate
+        - product
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        device_id:
+          type: string
+          example: A12345
+        releaseDate:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        product:
+          $ref: '#/components/schemas/Product'
+      type: object
+      
+    CompletedOrdersReading:
+      required:
+        - order_id
+        - device_id
+        - completedDate
+        - status
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        device_id:
+          type: string
+          example: A12345
+        completedDate:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        status:
+          type: string
+          example: completed
+      type: object
+
+
+    Product:
+      required:
+       - product_name
+       - num_of_prduct
+      properties:
+        product_name:
+           type: string
+           example: book
+        num_of_prduct:
+           type: integer
+           example: 80
+      type: object

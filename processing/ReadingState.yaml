@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  description: This is a simple API for reading stats
+  version: "1.0.0"
+  title: Stats API
+  contact:
+    email: dcheng72@my.bcit.ca
+
+paths:
+  /stats:
+    get:
+      summary: Gets the event stats
+      operationId: app.get_stats
+      description: Gets customer orders and product processsed statistics
+      responses:
+        '200':
+          description:  Successfully returned a list of customer orders events
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ReadingStats'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+               type: object
+               properties:
+                 message:
+                   type: string
+    
+components:
+  schemas:
+    ReadingStats:
+      required:
+        - num_cust_orders_readings
+        - num_comp_orders_readings
+        - num_product_readings
+        - max_product_readings
+      properties:
+        num_cust_orders_readings:
+          type: integer
+          example: 50000
+        num_comp_orders_readings:
+          type: integer
+          example: 50000
+        num_product_readings:
+          type: integer
+          example: 10000
+        max_product_readings:
+          type: integer
+          example: 250
+      type: object

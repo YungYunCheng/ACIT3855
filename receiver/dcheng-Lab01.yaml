@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  description: This is a simple API for business service
+  version: "1.0.0"
+  title: Reading API
+  contact:
+    email: dcheng72@my.bcit.ca
+
+paths:
+  /readings/customer-orders:
+    post:
+      tags:
+        - devices
+      summary: reports a customer's orders reading
+      operationId:  app.customer_orders_reading
+      description: |
+         Adds a new orders reading to the system
+      responses:
+        '201':
+          description: order created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerOrdersReading'
+        description: Reading item to add
+        
+  /readings/completed-orders:
+    post:
+      tags:
+        - devices
+      summary: reports a completed orders reading
+      operationId:  app.completed_orders_reading
+      description: |
+         Adds a new completed orders reading to the system
+      responses:
+        '201':
+          description: order created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletedOrdersReading'
+        description: Reading item to add
+
+components:
+  schemas:
+    CustomerOrdersReading:
+      required:
+        - order_id
+        - device_id
+        - releaseDate
+        - product
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        device_id:
+          type: string
+          example: A12345
+        releaseDate:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        product:
+          $ref: '#/components/schemas/Product'
+      type: object
+      
+    CompletedOrdersReading:
+      required:
+        - order_id
+        - device_id
+        - completedDate
+        - status
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        device_id:
+          type: string
+          example: A12345
+        completedDate:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        status:
+          type: string
+          example: completed
+      type: object
+
+    Product:
+      required:
+       - product_name
+       - num_of_prduct
+      properties:
+        product_name:
+           type: string
+           example: book
+        num_of_prduct:
+           type: integer
+           example: 80
+      type: object

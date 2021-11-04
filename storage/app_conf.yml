@@ -1,0 +1,11 @@
+version: 1
+db:
+  user: dcheng
+  password: password
+  hostname: acit3855lab6.eastus.cloudapp.azure.com
+  port: 3306
+  db: orders_reading
+events:
+  hostname: acit3855lab6.eastus.cloudapp.azure.com
+  port: 9092
+  topic: events
